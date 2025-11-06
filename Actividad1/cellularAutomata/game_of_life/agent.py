@@ -48,19 +48,31 @@ class Cell(FixedAgent):
         self.next_state = self.state
 
     def set_next_state(self, left_state, center_state, right_state):
-        a = 1 if left_state == self.ALIVE else 0 
-        b = 1 if center_state == self.ALIVE else 0
-        c = 1 if right_state == self.ALIVE else 0
-        pattern = f"{a}{b}{c}"
+        #Estado vivo por default
+        a = 1 
+        b = 1
+        c = 1 
 
-        if pattern in ("111", "101", "010", "000"):
+        #Si ambos agentes (actual y el siguiente) estan vivos, el siguiente estado debe ser DEAD o 0
+        if left_state == self.ALIVE:
+            a = 0
+
+        if center_state == self.ALIVE:
+            b = 0
+
+        if right_state == self.ALIVE:
+            c = 0
+
+        num = f"{a}{b}{c}"
+
+        if num in ("111", "101", "010", "000"):
             self.next_state = self.DEAD
         else:
             self.next_state = self.ALIVE
 
         self.state = self.next_state
         self.next_state = None
-
+        
     def assume_state(self):
         """Set the state to the new computed state -- computed in step()."""
         if self.next_state is not None:

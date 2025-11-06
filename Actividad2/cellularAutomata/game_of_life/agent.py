@@ -53,9 +53,21 @@ class Cell(FixedAgent):
                 self._next_state = self.ALIVE
 
     def set_next_state(self, left_state, center_state, right_state):
-        a = 1 if left_state == self.ALIVE else 0 
-        b = 1 if center_state == self.ALIVE else 0
-        c = 1 if right_state == self.ALIVE else 0
+        #Estado vivo por default
+        a = 1 
+        b = 1
+        c = 1 
+
+        #Si ambos agentes (actual y el siguiente) estan vivos, el siguiente estado debe ser DEAD o 0
+        if left_state == self.ALIVE:
+            a = 0
+
+        if center_state == self.ALIVE:
+            b = 0
+
+        if right_state == self.ALIVE:
+            c = 0
+
         num = f"{a}{b}{c}"
 
         if num in ("111", "101", "010", "000"):
