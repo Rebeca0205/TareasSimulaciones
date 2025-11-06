@@ -23,8 +23,6 @@ class ConwaysGameOfLife(Model):
 
         self.cell_grid = {}
 
-        self.current_row = height - 1  
-
         # Place a cell at each location, with some initialized to
         # ALIVE and some to DEAD.
         for cell in self.grid.all_cells:
@@ -56,7 +54,7 @@ class ConwaysGameOfLife(Model):
             x, y = agent.pos
 
             #posiciones de los neighbors en la misma fila
-            arriba = (y + 1) % height # este es e valor y arriba del agente actual
+            arriba = (y + 1) % height # este es el valor "y", arriba del agente actual
             left_pos = ((x - 1) % width, arriba)
             center_pos = (x, arriba)
             right_pos = ((x + 1) % width, arriba)
@@ -67,8 +65,12 @@ class ConwaysGameOfLife(Model):
             right_state = self.cell_grid[right_pos].state
 
             #Usa la funcion de agent para determinar el siguiente estdo
-            agent.set_next_state(left_state, center_state, right_state)
+            agent.set_next_state(
+                left_state, 
+                center_state, 
+                right_state
+            )
 
-            #Mover a siguiente fila
+        #Asumir siguiente estado para el agente
         for a in self.agents:
             a.assume_state()
