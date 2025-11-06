@@ -27,6 +27,7 @@ class ConwaysGameOfLife(Model):
 
         # Place a cell at each location, with some initialized to
         # ALIVE and some to DEAD.
+        # SOLAMENTE a la primera fila de la tabla
         for cell in self.grid.all_cells:
             x, y = cell.coordinate
             init_state=(

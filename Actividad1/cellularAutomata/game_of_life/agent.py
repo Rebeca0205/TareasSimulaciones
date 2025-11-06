@@ -65,14 +65,16 @@ class Cell(FixedAgent):
 
         num = f"{a}{b}{c}"
 
+        #Comparacion de los estados de los tres agentes arriba del actual
         if num in ("111", "101", "010", "000"):
             self.next_state = self.DEAD
         else:
             self.next_state = self.ALIVE
 
+        #Actualiza el estado
         self.state = self.next_state
         self.next_state = None
-        
+
     def assume_state(self):
         """Set the state to the new computed state -- computed in step()."""
         if self.next_state is not None:
