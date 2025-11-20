@@ -161,10 +161,8 @@ class RandomAgent(CellAgent):
     def _explore_step(self):
         """
         Movimiento de exploración:
-        1. Si hay vecinos nunca visitados, ir a uno.
-        2. Si no, seguir un path_to_explore (si existe).
-        3. Si no hay path_to_explore, buscar una celda no visitada con BFS.
-        4. Si ya todo fue visitado, ir a la celda vecina menos visitada.
+        1. Si hay vecinos nunca visitados, ir a uno de ellos.
+        2. Si no se puede, ir al vecino menos visitado.
         """
         neighbors = self._neighbors_no_obstacle(self.cell)
         if not neighbors:
@@ -232,9 +230,8 @@ class RandomAgent(CellAgent):
 
 
     def step(self):
-        """
-        Determines the new direction it will take, and then moves
-        """
+
+        # Limpiar si hay suciedad en la celda actual
         if [obj for obj in self.cell.agents if isinstance(obj, DirtPatch)]:
             self.clean()
             self.energy -= 1

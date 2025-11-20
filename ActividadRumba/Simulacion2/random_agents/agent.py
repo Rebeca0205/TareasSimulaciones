@@ -213,9 +213,7 @@ class RandomAgent(CellAgent):
         """
         Movimiento de exploración:
         1. Si hay vecinos nunca visitados, ir a uno de ellos.
-        2. Si no hay vecinos no visitados, intentar retroceder a la celda anterior
-           (last_coordinate) si es vecina.
-        3. Si tampoco se puede, ir al vecino menos visitado.
+        2. Si no se puede, ir al vecino menos visitado.
         """
         neighbors = self._neighbors_no_obstacle(self.cell)
         if not neighbors:
