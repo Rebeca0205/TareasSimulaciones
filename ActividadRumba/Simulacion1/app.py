@@ -5,6 +5,7 @@ from mesa.visualization import (
     Slider,
     SolaraViz,
     make_space_component,
+    make_plot_component
 )
 
 from mesa.visualization.components import AgentPortrayalStyle
@@ -19,7 +20,7 @@ def random_portrayal(agent):
     )
 
     if isinstance(agent, RandomAgent):
-        portrayal.color = "red"
+        portrayal.color = "blue"
     elif isinstance(agent, ObstacleAgent):
         portrayal.color = "gray"
         portrayal.marker = "s"
@@ -67,9 +68,17 @@ space_component = make_space_component(
         post_process=post_process
 )
 
+space_component = make_space_component(
+    random_portrayal,
+    draw_grid=False,
+    post_process=post_process
+)
+
+energy_dirty_plot = make_plot_component(["Energy", "Suciedad"])
+
 page = SolaraViz(
     model,
-    components=[space_component],
+    components=[space_component, energy_dirty_plot],
     model_params=model_params,
     name="Random Model",
 )

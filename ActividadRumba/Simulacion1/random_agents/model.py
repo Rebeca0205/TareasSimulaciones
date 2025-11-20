@@ -1,5 +1,6 @@
 from mesa import Model
 from mesa.discrete_space import OrthogonalMooreGrid
+from mesa.datacollection import DataCollector
 
 from .agent import RandomAgent, ObstacleAgent, DirtPatch, ChargingCell
 
@@ -22,6 +23,17 @@ class RandomModel(Model):
         self.height = height
 
         self.grid = OrthogonalMooreGrid([width, height], torus=False)
+        self.datacollector = DataCollector(
+            model_reporters={
+                "Suciedad": lambda m: len(m.agents_by_type[DirtPatch]),
+                "Energy": lambda m: next(
+                    a.energy for a in m.agents if isinstance(a, RandomAgent)
+                ),
+            },
+            agent_reporters={
+                "Energy": lambda a: a.energy if isinstance(a, RandomAgent) else None,
+            }
+        )
 
         # Identify the coordinates of the border of the grid
         border = [(x,y)
@@ -46,25 +58,13 @@ class RandomModel(Model):
             cell=self.random.choices(self.grid.empties.cells, k=self.dirt)
         )
 
-        ChargingCell.create_agents(
-            self,
-            self.charge,
-            cell=self.random.choices(self.grid.empties.cells, k=self.charge)
-        )
-
         cell = self.grid[1, 1]
         ChargingCell(self, cell=cell)
         RandomAgent(self, cell=cell)
-
-        # #Esto se usara para tener mas de un roomba
-        # RandomAgent.create_agents(
-        #     self,
-        #     self.num_agents,
-        #     cell=self.random.choices(self.grid.empties.cells, k=self.num_agents)
-        # )
 
         self.running = True
 
     def step(self):
         '''Advance the model by one step.'''
         self.agents.shuffle_do("step")
+        self.datacollector.collect(self)
